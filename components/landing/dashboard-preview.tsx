@@ -63,11 +63,35 @@ export function DashboardPreview() {
 
                                     {/* Reusing existing components directly! */}
                                     <div className="pointer-events-none select-none">
-                                        <StatsCards />
+                                        <StatsCards
+                                            streak={12}
+                                            urgesToday={2}
+                                            programDay={4}
+                                            hideUpgrade={true}
+                                            streakIntelligence={
+                                                <div className="mt-2 rounded-lg border p-3 flex items-start gap-3 border-indigo-500/20 bg-indigo-500/5">
+                                                    <div className="p-1.5 rounded-full bg-slate-900/40 shrink-0 mt-0.5 text-indigo-400">
+                                                        <Flame className="h-3.5 w-3.5" />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-xs font-bold uppercase tracking-wider opacity-90 text-indigo-400">Momentum Phase</h4>
+                                                        <p className="text-xs font-medium opacity-80 leading-relaxed mt-0.5 text-indigo-400">Don't break the chain.</p>
+                                                    </div>
+                                                </div>
+                                            }
+                                        />
                                     </div>
 
                                     <div className="grid gap-4 md:grid-cols-2 pointer-events-none select-none">
-                                        <UrgeChart />
+                                        <UrgeChart data={[
+                                            { name: 'Mon', urges: 4 },
+                                            { name: 'Tue', urges: 2 },
+                                            { name: 'Wed', urges: 5 },
+                                            { name: 'Thu', urges: 1 },
+                                            { name: 'Fri', urges: 3 },
+                                            { name: 'Sat', urges: 0 },
+                                            { name: 'Sun', urges: 2 },
+                                        ]} />
                                         {/* Placeholder for another widget */}
                                         <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
                                             <h3 className="text-slate-200 font-semibold mb-4">Daily Focus</h3>

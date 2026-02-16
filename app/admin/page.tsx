@@ -7,16 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
 
 export default function AdminPage() {
-    const { user, isLoading } = useAuth()
+    const { user, loading } = useAuth()
     const router = useRouter()
 
     useEffect(() => {
-        if (!isLoading && !user) {
+        if (!loading && !user) {
             router.push('/login')
         }
-    }, [user, isLoading, router])
+    }, [user, loading, router])
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div className="flex h-screen items-center justify-center bg-slate-950 text-slate-200">
                 <Loader2 className="h-8 w-8 animate-spin" />

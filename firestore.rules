@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User Profiles:
+    // Users can only read and write their own profile document.
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Urge Logs:
+    // Users can only create logs where the 'userId' field matches their UID.
+    // Users can only read logs where the 'userId' field matches their UID.
+    match /urge_logs/{logId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Journal Entries:
+    // Users can only create entries where the 'userId' field matches their UID.
+    // Users can only read entries where the 'userId' field matches their UID.
+    match /journal_entries/{entryId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Challenge Tasks:
+    // Publicly readable (or auth only), but not writable by users (Admin only)
+    match /challenge_tasks/{taskId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

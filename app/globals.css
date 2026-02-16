@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0f172a;
+  --color-foreground: #e2e8f0;
+
+  --color-primary: #6366f1;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #e2e8f0;
+
+  --color-accent: #8b5cf6;
+  --color-accent-foreground: #ffffff;
+
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+
+  --color-card: #1e293b;
+  --color-card-foreground: #e2e8f0;
+
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #6366f1;
+
+  --radius-lg: 0.5rem;
+  --radius-md: 0.375rem;
+  --radius-sm: 0.25rem;
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--color-indigo-500), var(--color-purple-500), var(--color-pink-500));
+  }
+
+  .bg-gradient-primary {
+    background-image: linear-gradient(to right, var(--color-indigo-500), var(--color-purple-600));
+  }
+
+  .glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card {
+    background-color: rgba(30, 41, 59, 0.5);
+    /* fallback */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    /* border-slate-700/50 approx */
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .hover-glow {
+    transition: all 300ms;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.5);
+  }
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

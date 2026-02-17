@@ -2,33 +2,40 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Play, PlayCircle, Shield, BarChart3, Activity, Check } from 'lucide-react'
+import { ArrowRight, PlayCircle, Shield, BarChart3, Activity } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { fadeInUpVariant, buttonClickVariant, floatingVariant, viewportConfig } from './animation-constants'
+import { fadeInUpVariant, fadeInUpMobile, buttonClickVariant, floatingVariant, viewportConfig } from './animation-constants'
 import { useRef } from 'react'
+import { useMobile } from '@/hooks/use-mobile'
 
 export function Hero() {
     const containerRef = useRef(null)
+    const isMobile = useMobile()
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"]
     })
 
-    const y = useTransform(scrollYProgress, [0, 1], [0, 200])
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+    // Disable parallax on mobile
+    const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, 200])
+    const opacity = useTransform(scrollYProgress, [0, 0.5], isMobile ? [1, 1] : [1, 0])
+
+    // Choose variant based on device
+    const mainVariant = isMobile ? fadeInUpMobile : fadeInUpVariant
 
     return (
         <section ref={containerRef} className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden bg-[#0f172a]">
             {/* --- STUDIO LIGHTING BACKGROUND --- */}
             <div className="absolute inset-0 pointer-events-none">
-                {/* Main Spotlight */}
-                <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-indigo-600/20 opacity-40 blur-[140px] rounded-full mix-blend-screen" />
+                {/* Main Spotlight - Reduced blur on mobile */}
+                <div className={`absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-indigo-600/20 opacity-40 rounded-full mix-blend-screen ${isMobile ? 'blur-[60px]' : 'blur-[140px]'}`} />
 
                 {/* Secondary Ambient Light (Purple) */}
-                <div className="absolute top-[20%] right-[-10%] w-[800px] h-[800px] bg-purple-600/10 opacity-30 blur-[120px] rounded-full mix-blend-screen" />
+                <div className={`absolute top-[20%] right-[-10%] w-[800px] h-[800px] bg-purple-600/10 opacity-30 rounded-full mix-blend-screen ${isMobile ? 'blur-[50px]' : 'blur-[120px]'}`} />
 
                 {/* Secondary Ambient Light (Teal) */}
-                <div className="absolute  bottom-[-10%] left-[-10%] w-[800px] h-[800px] bg-teal-600/10 opacity-20 blur-[120px] rounded-full mix-blend-screen" />
+                <div className={`absolute  bottom-[-10%] left-[-10%] w-[800px] h-[800px] bg-teal-600/10 opacity-20 rounded-full mix-blend-screen ${isMobile ? 'blur-[50px]' : 'blur-[120px]'}`} />
 
                 {/* Noise Texture Overlay */}
                 <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
@@ -42,7 +49,7 @@ export function Hero() {
 
                     {/* --- LEFT CONTENT --- */}
                     <motion.div
-                        variants={fadeInUpVariant}
+                        variants={mainVariant}
                         initial="hidden"
                         whileInView="visible"
                         viewport={viewportConfig}
@@ -52,11 +59,11 @@ export function Hero() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2, duration: 0.5 }}
+                            transition={{ delay: isMobile ? 0 : 0.2, duration: isMobile ? 0.3 : 0.5 }}
                             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold text-indigo-300 backdrop-blur-md shadow-lg hover:bg-white/[0.05] transition-colors cursor-default"
                         >
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                                <span className={`absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75 ${!isMobile && 'animate-ping'}`}></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                             </span>
                             Build the New You
@@ -65,7 +72,7 @@ export function Hero() {
                         {/* Cinematic Headline */}
                         <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tight">
                             <span className="block text-slate-200">Quit Porn.</span>
-                            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient-x pb-2">
+                            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 pb-2 ${!isMobile && 'animate-gradient-x'}`}>
                                 Reboot Your Brain.
                             </span>
                             <span className="block text-slate-200">Recover Control.</span>
@@ -79,7 +86,7 @@ export function Hero() {
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-5 pt-4 relative z-20">
                             <Link href="/signup">
-                                <motion.div variants={buttonClickVariant} whileHover="hover" whileTap="tap">
+                                <motion.div variants={buttonClickVariant} whileHover={isMobile ? undefined : "hover"} whileTap="tap">
                                     <Button
                                         size="lg"
                                         className="relative h-14 px-10 text-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-full font-bold shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:shadow-[0_0_40px_rgba(124,58,237,0.6)] transition-all duration-300 group overflow-hidden border border-white/10"
@@ -88,14 +95,16 @@ export function Hero() {
                                             Start Recovery Now
                                             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform text-indigo-200 group-hover:text-white" />
                                         </span>
-                                        {/* Shimmer Effect */}
-                                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent z-0" />
+                                        {/* Shimmer Effect - Desktop only */}
+                                        {!isMobile && (
+                                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent z-0" />
+                                        )}
                                     </Button>
                                 </motion.div>
                             </Link>
 
                             <Link href="#how-it-works">
-                                <motion.div variants={buttonClickVariant} whileHover="hover" whileTap="tap">
+                                <motion.div variants={buttonClickVariant} whileHover={isMobile ? undefined : "hover"} whileTap="tap">
                                     <Button
                                         variant="outline"
                                         size="lg"
@@ -125,7 +134,7 @@ export function Hero() {
                             </div>
                             <div>
                                 <div className="flex items-center gap-1 mb-1">
-                                    {[1, 2, 3, 4, 5].map(i => <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 + (i * 0.05) }} className="h-4 w-4 text-yellow-500 fill-current"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></motion.div>)}
+                                    {[1, 2, 3, 4, 5].map(i => <motion.div key={i} initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 + (i * 0.05) }} className="h-4 w-4 text-yellow-500 fill-current"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></motion.div>)}
                                 </div>
                                 <div className="text-sm text-slate-400">
                                     <span className="text-white font-bold">1,200+ Members</span> reclaiming focus.

@@ -66,3 +66,27 @@ export const viewportConfig = {
     amount: 0.2,
     margin: "-50px"
 }
+
+// Mobile Variants (Reduced Motion)
+export const fadeInUpMobile: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.4,
+            ease: [0.25, 0.1, 0.25, 1.0] as const
+        }
+    }
+}
+
+export const staggerContainerMobile: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0, // No stagger
+            delayChildren: 0
+        }
+    }
+}

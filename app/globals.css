@@ -41,54 +41,61 @@
     background-image: linear-gradient(to right, var(--color-indigo-500), var(--color-purple-600));
   }
 
-  .glass {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Desktop Only Effects */
+  @media (min-width: 768px) {
+    .glass {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background-color: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    .hover-glow {
+      transition: all 300ms;
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+      border-color: rgba(99, 102, 241, 0.5);
+    }
   }
 
-  .glass-card {
-    background-color: rgba(30, 41, 59, 0.5);
-    /* fallback */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(51, 65, 85, 0.5);
-    /* border-slate-700/50 approx */
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Mobile Fallbacks (Performance Optimized) */
+  @media (max-width: 767px) {
+    .glass {
+      background-color: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .glass-card {
+      background-color: #1e293b;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+    }
   }
 
-  .animate-fade-up {
-    animation: fade-up 0.6s ease-out forwards;
-  }
+  /* Reduced Motion Preference */
+  @media (prefers-reduced-motion: reduce) {
 
-  .delay-100 {
-    animation-delay: 100ms;
-  }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
 
-  .delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .delay-400 {
-    animation-delay: 400ms;
-  }
-
-  .delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .hover-glow {
-    transition: all 300ms;
-  }
-
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-    border-color: rgba(99, 102, 241, 0.5);
+    .animate-spin {
+      animation: none !important;
+    }
   }
 }
 

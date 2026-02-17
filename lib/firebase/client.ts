@@ -28,4 +28,10 @@ if (typeof window !== "undefined") {
     });
 }
 
-export { auth, db, analytics };
+import { GoogleAuthProvider } from "firebase/auth";
+
+// ... existing code ...
+
+const googleProvider = new GoogleAuthProvider();
+
+export { auth, db, analytics, googleProvider };
